@@ -1,8 +1,4 @@
-import getOrCreateDB from "@/models/server/dbSetup";
 import Image from "next/image";
-
-getOrCreateDB();
-console.log("Database setup complete");
 
 export default function Home() {
   return (

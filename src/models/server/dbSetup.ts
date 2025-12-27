@@ -4,13 +4,20 @@ import createQuestionCollection from "./question.collection";
 import createAnswerCollection from "./answer.collection";
 import createCommentCollection from "./comment.collection";
 import createVoteCollection from "./vote.collection";
-import getOrCreateStorage from "./storage.collection";
+
+let dbInitialized = false;
 
 export default async function getOrCreateDB() {
+    // Return early if already initialized
+    if (dbInitialized) {
+        return db;
+    }
+
     //check if database exists
     try {
         await tablesDB.get({ databaseId: db });
-        console.log(`Database ${db} already exists`);
+        console.log(`Database ${db} connected`);
+        dbInitialized = true;
     }
     catch (error) {
         //create database
@@ -27,10 +34,10 @@ export default async function getOrCreateDB() {
                 createAnswerCollection(),
                 createCommentCollection(),
                 createVoteCollection(),
-                getOrCreateStorage(),
             ]);
 
             console.log("All tables and storage created");
+            dbInitialized = true;
         } catch (error) {
             console.error("Error creating database:", error);
         }
